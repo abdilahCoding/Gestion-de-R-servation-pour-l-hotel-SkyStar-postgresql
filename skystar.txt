@@ -151,6 +151,21 @@ begin
 end;$updatePrice$
 
 
+-----------9
+CREATE or replace FUNCTION Clinetsnotresv ()
+RETURNS TABLE(numC int ,lits int,prix real) as $listn$
+
+BEGIN
+    RETURN QUERY SELECT
+     cl.*
+    FROM
+     "clients" AS cl,"reservations" AS r
+     WHERE cl."numpass"=r."numpass" AND EXTRACT(MONTH FROM r."date_départ")!=6
+	 GROUP BY cl."numpass";
+END; 
+$listn$ LANGUAGE 'plpgsql';
+
+
 CALL ModifierPrixPourLits()
 CALL supprimerClient()
 CALL ModifierPrix()
